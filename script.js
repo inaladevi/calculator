@@ -163,7 +163,7 @@ window.addEventListener('keydown', function(e) {
     const button = document.querySelector(`button[data-number="${e.key}"], button[data-operator="${e.key}"]`);
 
     if (e.key === "Enter") document.querySelector("#equals").click();
-    if (e.key === "Backspace") document.querySelector("#clear").click();
+    if (e.key === "Backspace") document.querySelector("#backspace").click();
     if (e.key === "Escape") document.querySelector("#allClear").click();
 
     if (button) button.click();
