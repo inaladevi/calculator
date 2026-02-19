@@ -19,19 +19,14 @@ function operate(operator, num1, num2) {
     const b = Number(num2);
     let result; 
 
-    if (operator === "+") {
-        result = add(a, b);
-    } else if (operator === "-") {
-        result = subtract(a, b);
-    } else if (operator === "*") {
-        result = multiply(a, b);
-    } else if (operator === "/") {
-        if (b === 0) {
-            return "Undefined"; 
-        }       
+    if (operator === "+") result = add(a, b);
+    else if (operator === "-") result = subtract(a, b);
+    else if (operator === "*") result = multiply(a, b);
+    else if (operator === "/") {
+        if (b === 0) return "Undefined";
         result = divide(a, b);
-    } 
-
+    }
+    
     return Math.round(result * 1000) / 1000;
 }
 
@@ -45,7 +40,7 @@ const allClear = document.querySelector("#allClear");
 const operators = document.querySelectorAll(".operator");
 const equals = document.querySelector("#equals");
 const historyDisplay = document.querySelector("#history");
-const backspace = document.querySelector("#clear");
+const backspace = document.querySelector("#backspace");
 const sign = document.querySelector("#sign");
 const percent = document.querySelector("#percent");
 
@@ -137,7 +132,12 @@ allClear.addEventListener("click", function(){
 });
 
 backspace.addEventListener("click", function (){
-    displayValue = displayValue.toString().slice(0, -1);
+    if (shouldResetScreen) {
+        displayValue = "";
+        display.textContent = "0";
+        shouldResetScreen = false;
+        return;
+}
 
     if (displayValue === "") {
         display.textContent = "0";
@@ -158,16 +158,35 @@ sign.addEventListener("click", () => {
 });
 
 window.addEventListener('keydown', function(e) {
-    console.log(e.key);
+    if (["/", "*", "+", "-", "Enter", "Backspace", "Escape"].includes(e.key)) {
+        e.preventDefault();
+    }
+
+    if (e.key === "Enter" || e.key === "=") {
+        equals.click();
+        return;
+    }
+    if (e.key === "Backspace") {
+        document.querySelector("#backspace").click();
+        return;
+    }
+    if (e.key === "Escape") {
+        allClear.click();
+        return;
+    }
+
+    if (e.key === "n") {
+        sign.click();
+        return;
+    }
 
     const button = document.querySelector(`button[data-number="${e.key}"], button[data-operator="${e.key}"]`);
 
-    if (e.key === "Enter") document.querySelector("#equals").click();
-    if (e.key === "Backspace") document.querySelector("#backspace").click();
-    if (e.key === "Escape") document.querySelector("#allClear").click();
-
-    if (button) button.click();
+    if (button) {
+        button.click();
+    }
 });
+
 
 percent.addEventListener("click", () => {
     if (displayValue === "" || displayValue === "0") return;
