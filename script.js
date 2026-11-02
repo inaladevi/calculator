@@ -131,19 +131,16 @@ allClear.addEventListener("click", function(){
     shouldResetScreen = false;
 });
 
-backspace.addEventListener("click", function (){
+backspace.addEventListener("click", function () {
     if (shouldResetScreen) {
         displayValue = "";
         display.textContent = "0";
         shouldResetScreen = false;
         return;
-}
-
-    if (displayValue === "") {
-        display.textContent = "0";
-    } else {
-        display.textContent = displayValue;
     }
+
+    displayValue = displayValue.slice(0, -1);
+    display.textContent = displayValue === "" ? "0" : displayValue;
 });
 
 sign.addEventListener("click", () => {
